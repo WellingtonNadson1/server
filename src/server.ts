@@ -1,13 +1,29 @@
+// import express from "express";
+import Fastify, { FastifyInstance } from "fastify";
+import routerUser from "./Routers/UserRouters";
 
-import fastify from "fastify";
-
-const app = fastify();
 const PORT = 3333;
 
-app.get('/', () => {
-  return 'Hello World!'
-})
+const app: FastifyInstance = Fastify( {logger: true});
 
-app.listen({
-  port: PORT,
-}).then(() => console.log(`🚀 Server running at http://localhost:${PORT}`))
+const start = async () => {
+  try {
+    app.register(routerUser) // tipo um middleware do express
+    await app.listen({ port: PORT })
+  } catch (err) {
+    app.log.error(err)
+    process.exit(1)
+  }
+}
+start()
+
+// Server with Express
+// const hostname = "localhost";
+// const app = express();
+
+// app.use(express.json());
+// app.use(routerUser);
+
+// app.listen(PORT, hostname, () =>
+//   console.log(`🚀 Server running at http://localhost:${PORT}`)
+// );

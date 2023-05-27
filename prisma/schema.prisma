@@ -14,9 +14,10 @@ datasource db {
 model User {
   id                String    @id @default(uuid())
   email             String    @unique
-  firt_name         String?
+  first_name        String?
   last_name         String?
   cpf               String?
+  telefone_celular  String?
   date_nascimento   DateTime?
   escolaridade      String?
   sexo              String?
@@ -34,14 +35,6 @@ model User {
   date_batismo      DateTime?
   celula_id         String?
   situacao_no_reino String?
-  posts             Post[]
-}
-
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+  date_create       DateTime
+  date_update       DateTime?
 }
