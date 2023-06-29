@@ -12,29 +12,134 @@ datasource db {
 
 // MODELS
 model User {
-  id                String    @id @default(uuid())
-  email             String    @unique
-  first_name        String?
-  last_name         String?
-  cpf               String?
-  telefone_celular  String?
-  date_nascimento   DateTime?
-  escolaridade      String?
-  sexo              String?
-  profissao         String?
-  naturalidade      String?
-  endereco_id       String?
-  estado_civil      String?
-  conjuge_name      String?
-  date_casamento    DateTime?
-  numero_filhos     Int?
-  mae_name          String?
-  pai_name          String?
-  date_decisao      DateTime?
+  id           String    @id @default(uuid())
+  email        String    @unique
+  firstName    String?
+  lastName     String?
+  cpf          String?
+  dateNasc     DateTime?
+  sexo         String?
+  telefone     String?
+  escolaridade String?
+  profissao    String?
+
   batizado          String?
-  date_batismo      DateTime?
-  celula_id         String?
+  dateBatizado      DateTime?
+  isDiscipulado     String?
+  discipulador      String?
+  supervisao        Supervisao?       @relation(fields: [supervisaoId], references: [id])
+  celula            Celula?           @relation(fields: [celulaId], references: [id])
+  escolaPrincipios  EscolaPrincipio?  @relation(fields: [escolaPrincipioId], references: [id])
+  escolaFundamentos EscolaFundamento? @relation(fields: [escolaFundamentoId], references: [id])
+  escolaDisicipulos EscolaDiscipulo?  @relation(fields: [escolaDiscipuloId], references: [id])
+  escolaOracao      EscolaOracao?     @relation(fields: [escolaOracaoId], references: [id])
+
+  encontroComDeus EncontroComDeus? @relation(fields: [encontroComDeusId], references: [id])
+  encontroDD      EncontroDD?      @relation(fields: [encontroDDId], references: [id])
+
+  estadoCivil     String?
+  nomeConjuge     String?
+  dateCasamento   DateTime?
+  hasFilho        String?
+  quantidadeFilho Int?
+
+  endereco Endereco? @relation(fields: [enderecoId], references: [id])
+
+  dateDecisao       DateTime?
   situacao_no_reino String?
-  date_create       DateTime
-  date_update       DateTime?
+
+  date_create DateTime @default(now())
+  date_update DateTime @updatedAt
+
+  celulaId           String?
+  enderecoId         String?
+  supervisaoId       String?
+  escolaPrincId      String?
+  escolaFundId       String?
+  escolaDiscId       String?
+  escolaOraId        String?
+  escolaPrincipioId  String?
+  escolaFundamentoId String?
+  escolaDiscipuloId  String?
+  escolaOracaoId     String?
+  encontroComDeusId  String?
+  encontroDDId       String?
+}
+
+model Endereco {
+  id          String   @id @default(uuid())
+  cep         String?
+  cidade      String?
+  estado      String?
+  endereco    String?
+  date_create DateTime @default(now())
+  date_update DateTime @updatedAt
+  User        User[]
+}
+
+model Celula {
+  id           String      @id @default(uuid())
+  nome         String
+  date_create  DateTime    @default(now())
+  date_update  DateTime    @updatedAt
+  User         User[]
+  Supervisao   Supervisao? @relation(fields: [supervisaoId], references: [id])
+  supervisaoId String?
+}
+
+model Supervisao {
+  id          String   @id @default(uuid())
+  nome        String
+  celulas     Celula[]
+  date_create DateTime @default(now())
+  date_update DateTime @updatedAt
+  User        User[]
+}
+
+model EscolaPrincipio {
+  id          String   @id @default(uuid())
+  nome        String
+  date_create DateTime @default(now())
+  date_update DateTime @updatedAt
+  User        User[]
+}
+
+model EscolaFundamento {
+  id          String   @id @default(uuid())
+  nome        String
+  date_create DateTime @default(now())
+  date_update DateTime @updatedAt
+  User        User[]
+}
+
+model EscolaDiscipulo {
+  id          String   @id @default(uuid())
+  nome        String
+  date_create DateTime @default(now())
+  date_update DateTime @updatedAt
+  User        User[]
+}
+
+model EscolaOracao {
+  id          String   @id @default(uuid())
+  nome        String
+  date_create DateTime @default(now())
+  date_update DateTime @updatedAt
+  User        User[]
+}
+
+model EncontroComDeus {
+  id          String   @id @default(uuid())
+  nome        String
+  date_create DateTime @default(now())
+  date_update DateTime @updatedAt
+  User        User[]
+}
+
+model EncontroDD {
+  id          String   @id @default(uuid())
+  nome        String
+  date_create DateTime @default(now())
+  date_update DateTime @updatedAt
+  User        User[]
 }

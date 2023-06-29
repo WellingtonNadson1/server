@@ -9,7 +9,6 @@ const routerUser = async (fastify: FastifyInstance) => {
   fastify.post("/users", UserController.store);
   fastify.delete("/users/:id", UserController.delete);
   fastify.put("/users/:id", UserController.update);
-
 };
 
 export default routerUser;

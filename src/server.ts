@@ -1,5 +1,8 @@
 // import express from "express";
+import cors from "@fastify/cors";
 import Fastify, { FastifyInstance } from "fastify";
+import routerCelula from "./Routers/CelulaRouters";
+import routerSupervisao from "./Routers/SupervisaoRouters";
 import routerUser from "./Routers/UserRouters";
 
 const PORT = 3333;
@@ -8,6 +11,12 @@ const app: FastifyInstance = Fastify( {logger: true});
 
 const start = async () => {
   try {
+    app.register(cors, {
+      origin: "*",
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    })
+    app.register(routerSupervisao)
+    app.register(routerCelula)
     app.register(routerUser) // tipo um middleware do express
     await app.listen({ port: PORT })
   } catch (err) {

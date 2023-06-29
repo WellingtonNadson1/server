@@ -3,29 +3,37 @@ import UserRepositorie from "../Repositories/UserRepositorie";
 
 export interface UserData {
   email: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   cpf: string;
-  telefone_celular: string;
-  date_nascimento: string | Date;
-  escolaridade: string;
+  dateNasc: string | Date;
   sexo: string;
+  telefone: string;
+  escolaridade: string;
   profissao: string;
-  naturalidade: string;
-  endereco_id: string;
-  estado_civil: string;
-  conjuge_name: string;
-  date_casamento: string | Date;
-  numero_filhos: number;
-  mae_name: string;
-  pai_name: string;
-  date_decisao: string | Date;
   batizado: string;
-  date_batismo: string | Date;
-  celula_id: string;
+  dateBatizado: string | Date;
+  isDiscipulado: string;
+  discipulador: string;
+  supervisao:  string;
+  celula: string  | undefined;
+  escolaPrincipios: string  | undefined;
+  escolaFundamentos: string | undefined;
+  escolaDisicipulos: string | undefined;
+  escolaOracao: string | undefined;
+  encontroComDeus: string | undefined;
+  encontroDD: string | undefined;
+  estadoCivil: string;
+  nomeConjuge: string;
+  dateCasamento: string | Date;
+  hasFilho: string;
+  quantidadeFilho: number;
+
+  endereco_id: string | undefined;
+
+  dateDecisao: string | Date;
+
   situacao_no_reino: string;
-  date_create: string | Date;
-  date_update: string | Date;
 }
 
 interface UserParams {
@@ -55,8 +63,6 @@ class UserController {
 
   async store(request: FastifyRequest, reply: FastifyReply) {
     const userDataForm = request.body as UserData;
-    const date_create = new Date();
-    const date_update = new Date();
     const { email } = userDataForm;
     const userExist = await UserRepositorie.findByEmail(email);
     if (userExist) {
@@ -67,8 +73,6 @@ class UserController {
 
     const user = await UserRepositorie.createUser({
       ...userDataForm,
-      date_create,
-      date_update,
     });
     return reply.code(201).send(user);
   }
@@ -77,10 +81,8 @@ class UserController {
     Params: UserParams }>, reply: FastifyReply) {
     const id = request.params.id;
     const userDataForm = request.body as UserData;
-    const date_update = new Date();
     const user = await UserRepositorie.updateUser(id, {
       ...userDataForm,
-      date_update,
     });
     return reply.code(202).send(user);
   }
@@ -89,7 +91,7 @@ class UserController {
     Params: UserParams }>, reply: FastifyReply) {
     const id = request.params.id;
     await UserRepositorie.deleteUser(id);
-    return reply.code(204);
+    return reply.code(204).send();
   }
 
   // Faazendo uso do Express
