@@ -1,8 +1,24 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import SupervisaoRepositorie from '../Repositories/SupervisaoRepositorie';
 
+interface Celula {
+  id: string
+  nome: string
+}
+
+interface User {
+  id: string
+  nome: string
+}
+
 export interface SupervisaoData {
   nome: string;
+  supervisor: {
+    id: string
+    nome: string
+  };
+  celulas: Celula[];
+  membros: User[];
 }
 
 interface SupervisaoParams {
@@ -17,7 +33,7 @@ class SupervisaoController {
     if (!supervisoes) {
       return reply.code(500).send({ error: 'Internal Server Error' });
     }
-    return reply.send(supervisoes);
+    return reply.code(200).send(supervisoes);
   }
 
   async show(request: FastifyRequest <{

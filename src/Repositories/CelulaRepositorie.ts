@@ -5,37 +5,88 @@ const prisma = new PrismaClient();
 
 class CelulaRepositorie {
   async findAll() {
-    const celulas = await prisma.celula.findMany();
-    return celulas;
+    return await prisma.celula.findMany({
+      select: {
+        id: true,
+        nome: true,
+        lider: {
+          select: {
+            id: true,
+            firstName: true,
+          }
+        },
+        Supervisao: {
+          select: {
+            id: true,
+            nome: true,
+          }
+        },
+        User: {
+          select: {
+            id: true,
+            firstName: true,
+          }
+        },
+      }
+    });
   }
 
   async findById(id: string){
-    const celulaExistById = await prisma.celula.findUnique({
+    return await prisma.celula.findUnique({
       where: {
         id: id,
       }
     })
-    return celulaExistById
   }
 
   async createCelula(celulaDataForm: CelulaData) {
-    const { nome } = celulaDataForm
-    const celula = await prisma.celula.create({
+    const { nome, lider, supervisao, membros } = celulaDataForm
+    return await prisma.celula.create({
       data: {
         nome,
+        lider: {
+          connect: {
+            id: lider.id
+          }
+        },
+        Supervisao: {
+          connect: {
+            id: supervisao.id
+          }
+        },
+        User: {
+          connect: membros.map((membroId) => ({id: membroId.id}))
+
+        },
       },
     });
-    return celula;
   }
 
   async updateCelula(id: string, celulaDataForm: CelulaData) {
-    const celula = await prisma.celula.update({
+    const { nome, lider, supervisao, membros } = celulaDataForm
+    return await prisma.celula.update({
       where: {
         id: id,
       },
-      data: celulaDataForm,
+      data: {
+        nome,
+        lider: {
+          connect: {
+            id: lider.id
+          }
+        },
+        Supervisao: {
+          connect: {
+            id: supervisao.id
+          }
+        },
+        User: {
+          connect: membros.map((membroId) => ({id: membroId.id}))
+
+        },
+      },
     });
-    return celula;
+
   }
 
   async deleteCelula(id: string) {

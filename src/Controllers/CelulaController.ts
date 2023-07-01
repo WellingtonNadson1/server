@@ -1,8 +1,22 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import CelulaRepositorie from "../Repositories/CelulaRepositorie";
 
+interface User {
+  id: string
+  nome: string
+}
+
 export interface CelulaData {
   nome: string;
+  lider: {
+    id: string
+    nome: string
+  };
+  supervisao:{
+    id: string
+    nome: string
+  };
+  membros: User[];
 }
 
 interface CelulaParams {
