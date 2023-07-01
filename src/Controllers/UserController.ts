@@ -1,6 +1,16 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import UserRepositorie from "../Repositories/UserRepositorie";
 
+interface Escolas {
+  id: string
+  nome: string
+}
+
+interface Encontros {
+  id: string
+  nome: string
+}
+
 export interface UserData {
   email: string;
   firstName: string;
@@ -17,23 +27,17 @@ export interface UserData {
   discipulador: string;
   supervisao:  string;
   celula: string  | undefined;
-  escolaPrincipios: string  | undefined;
-  escolaFundamentos: string | undefined;
-  escolaDisicipulos: string | undefined;
-  escolaOracao: string | undefined;
-  encontroComDeus: string | undefined;
-  encontroDD: string | undefined;
+  escolas: Escolas[];
+  encontros: Encontros[];
   estadoCivil: string;
   nomeConjuge: string;
   dateCasamento: string | Date;
   hasFilho: string;
   quantidadeFilho: number;
-
   endereco_id: string | undefined;
-
   dateDecisao: string | Date;
-
   situacao_no_reino: string;
+  cargo_de_lideranca: string;
 }
 
 interface UserParams {

@@ -5,7 +5,40 @@ const prisma = new PrismaClient();
 
 class UserRepositorie {
   async findAll() {
-    return await prisma.user.findMany();
+    return await prisma.user.findMany({
+      include: {
+        supervisao: {
+          select: {
+            nome: true,
+          }
+        },
+        celula: {
+          select: {
+            nome: true,
+          }
+        },
+        situacao_no_reino: {
+          select: {
+            nome: true,
+          }
+        },
+        cargo_de_lideranca: {
+          select: {
+            nome: true,
+          }
+        },
+        escolas: {
+          select: {
+            nome: true,
+          }
+        },
+        encontros: {
+          select: {
+            nome: true,
+          }
+        },
+      }
+    });
   }
 
   async findById(id: string){
@@ -25,7 +58,7 @@ class UserRepositorie {
   }
 
   async createUser(userDataForm: UserData) {
-  const {supervisao, celula, escolaPrincipios, escolaFundamentos, escolaDisicipulos, escolaOracao, encontroComDeus, encontroDD, ...userData} = userDataForm
+  const {supervisao, celula, escolas, encontros, situacao_no_reino, cargo_de_lideranca, ...userData} = userDataForm
   const user = await prisma.user.create({
     data: {
       ...userData,
@@ -39,34 +72,20 @@ class UserRepositorie {
             id: celula
           }
       },
-      escolaPrincipios: {
+      escolas: {
+          connect: escolas.map((escolaId) => ({id: escolaId.id}))
+      },
+      encontros: {
+          connect: encontros.map((encontId => ({id: encontId.id})))
+      },
+      situacao_no_reino: {
           connect: {
-            id: escolaPrincipios
+            id: situacao_no_reino
           }
       },
-      escolaFundamentos: {
+      cargo_de_lideranca: {
           connect: {
-            id: escolaFundamentos
-          }
-      },
-      escolaDisicipulos: {
-          connect: {
-            id: escolaDisicipulos
-          }
-      },
-      escolaOracao: {
-          connect: {
-            id: escolaOracao
-          }
-      },
-      encontroComDeus: {
-          connect: {
-            id: encontroComDeus
-          }
-      },
-      encontroDD: {
-          connect: {
-            id: encontroDD
+            id: cargo_de_lideranca
           }
       },
     },
@@ -76,7 +95,7 @@ class UserRepositorie {
   }
 
   async updateUser(id: string, userDataForm: UserData) {
-    const {supervisao, celula, escolaPrincipios, escolaFundamentos, escolaDisicipulos, escolaOracao, encontroComDeus, encontroDD, ...userData} = userDataForm
+    const {supervisao, celula, escolas, encontros, situacao_no_reino, cargo_de_lideranca, ...userData} = userDataForm
     return await prisma.user.update({
       where: {
         id: id,
@@ -93,36 +112,22 @@ class UserRepositorie {
               id: celula
             }
         },
-        escolaPrincipios: {
-            connect: {
-              id: escolaPrincipios
-            }
-        },
-        escolaFundamentos: {
-            connect: {
-              id: escolaFundamentos
-            }
-        },
-        escolaDisicipulos: {
-            connect: {
-              id: escolaDisicipulos
-            }
-        },
-        escolaOracao: {
-            connect: {
-              id: escolaOracao
-            }
-        },
-        encontroComDeus: {
-            connect: {
-              id: encontroComDeus
-            }
-        },
-        encontroDD: {
-            connect: {
-              id: encontroDD
-            }
-        },
+        escolas: {
+          connect: escolas.map((escolaId) => ({id: escolaId.id}))
+      },
+      encontros: {
+          connect: encontros.map((encontId => ({id: encontId.id})))
+      },
+        situacao_no_reino: {
+          connect: {
+            id: situacao_no_reino
+          }
+      },
+      cargo_de_lideranca: {
+          connect: {
+            id: cargo_de_lideranca
+          }
+      },
       },
   });
   }

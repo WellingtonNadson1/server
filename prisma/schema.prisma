@@ -13,6 +13,7 @@ datasource db {
 // MODELS
 model User {
   id           String    @id @default(uuid())
+  photoPerfil  String?
   email        String    @unique
   firstName    String?
   lastName     String?
@@ -23,19 +24,14 @@ model User {
   escolaridade String?
   profissao    String?
 
-  batizado          String?
-  dateBatizado      DateTime?
-  isDiscipulado     String?
-  discipulador      String?
-  supervisao        Supervisao?       @relation(fields: [supervisaoId], references: [id])
-  celula            Celula?           @relation(fields: [celulaId], references: [id])
-  escolaPrincipios  EscolaPrincipio?  @relation(fields: [escolaPrincipioId], references: [id])
-  escolaFundamentos EscolaFundamento? @relation(fields: [escolaFundamentoId], references: [id])
-  escolaDisicipulos EscolaDiscipulo?  @relation(fields: [escolaDiscipuloId], references: [id])
-  escolaOracao      EscolaOracao?     @relation(fields: [escolaOracaoId], references: [id])
-
-  encontroComDeus EncontroComDeus? @relation(fields: [encontroComDeusId], references: [id])
-  encontroDD      EncontroDD?      @relation(fields: [encontroDDId], references: [id])
+  batizado      String?
+  dateBatizado  DateTime?
+  isDiscipulado String?
+  discipulador  String?
+  supervisao    Supervisao? @relation(fields: [supervisaoId], references: [id])
+  celula        Celula?     @relation(fields: [celulaId], references: [id])
+  escolas       Escolas[]
+  encontros     Encontros[]
 
   estadoCivil     String?
   nomeConjuge     String?
@@ -45,25 +41,23 @@ model User {
 
   endereco Endereco? @relation(fields: [enderecoId], references: [id])
 
-  dateDecisao       DateTime?
-  situacao_no_reino String?
+  dateDecisao        DateTime?
+  situacao_no_reino  SituacaoNoReino?  @relation(fields: [situacaoNoReinoId], references: [id])
+  cargo_de_lideranca CargoDeLideranca? @relation(fields: [cargoDeLiderancaId], references: [id])
 
   date_create DateTime @default(now())
   date_update DateTime @updatedAt
 
-  celulaId           String?
-  enderecoId         String?
-  supervisaoId       String?
-  escolaPrincId      String?
-  escolaFundId       String?
-  escolaDiscId       String?
-  escolaOraId        String?
-  escolaPrincipioId  String?
-  escolaFundamentoId String?
-  escolaDiscipuloId  String?
-  escolaOracaoId     String?
-  encontroComDeusId  String?
-  encontroDDId       String?
+  celulaId     String?
+  enderecoId   String?
+  supervisaoId String?
+
+  situacaoNoReinoId  String?
+  cargoDeLiderancaId String?
+  lider              Celula[]     @relation("LiderCelula")
+  Supervisao         Supervisao[] @relation("Supervisor")
+
+  @@map("User") // Defina um nome de tabela personalizado, se necessário
 }
 
 model Endereco {
@@ -80,23 +74,28 @@ model Endereco {
 model Celula {
   id           String      @id @default(uuid())
   nome         String
+  lider        User?       @relation("LiderCelula", fields: [userId], references: [id])
   date_create  DateTime    @default(now())
   date_update  DateTime    @updatedAt
-  User         User[]
   Supervisao   Supervisao? @relation(fields: [supervisaoId], references: [id])
   supervisaoId String?
+  User         User[]
+  userId       String?
 }
 
 model Supervisao {
   id          String   @id @default(uuid())
   nome        String
+  supervisor  User?    @relation("Supervisor", fields: [userId], references: [id])
   celulas     Celula[]
   date_create DateTime @default(now())
-  date_update DateTime @updatedAt
   User        User[]
+  userId      String?
+
+  @@map("Supervisao") // Defina um nome de tabela personalizado, se necessário
 }
 
-model EscolaPrincipio {
+model Escolas {
   id          String   @id @default(uuid())
   nome        String
   date_create DateTime @default(now())
@@ -104,7 +103,7 @@ model EscolaPrincipio {
   User        User[]
 }
 
-model EscolaFundamento {
+model Encontros {
   id          String   @id @default(uuid())
   nome        String
   date_create DateTime @default(now())
@@ -112,7 +111,7 @@ model EscolaFundamento {
   User        User[]
 }
 
-model EscolaDiscipulo {
+model SituacaoNoReino {
   id          String   @id @default(uuid())
   nome        String
   date_create DateTime @default(now())
@@ -120,23 +119,7 @@ model EscolaDiscipulo {
   User        User[]
 }
 
-model EscolaOracao {
-  id          String   @id @default(uuid())
-  nome        String
-  date_create DateTime @default(now())
-  date_update DateTime @updatedAt
-  User        User[]
-}
-
-model EncontroComDeus {
-  id          String   @id @default(uuid())
-  nome        String
-  date_create DateTime @default(now())
-  date_update DateTime @updatedAt
-  User        User[]
-}
-
-model EncontroDD {
+model CargoDeLideranca {
   id          String   @id @default(uuid())
   nome        String
   date_create DateTime @default(now())
