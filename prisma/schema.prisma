@@ -84,15 +84,25 @@ model Celula {
 }
 
 model Supervisao {
-  id          String   @id @default(uuid())
-  nome        String
-  supervisor  User?    @relation("Supervisor", fields: [userId], references: [id])
-  celulas     Celula[]
-  date_create DateTime @default(now())
-  User        User[]
-  userId      String?
+  id                String           @id @default(uuid())
+  nome              String
+  cor               String
+  supervisor        User?            @relation("Supervisor", fields: [userId], references: [id])
+  celulas           Celula[]
+  date_create       DateTime         @default(now())
+  date_update       DateTime         @updatedAt
+  User              User[]
+  nivelSupervisao   NivelSupervisao? @relation(fields: [nivelSupervisaoId], references: [id])
+  userId            String?
+  nivelSupervisaoId String?
 
   @@map("Supervisao") // Defina um nome de tabela personalizado, se necessário
+}
+
+model NivelSupervisao {
+  id         String       @id @default(uuid())
+  nome       String
+  Supervisao Supervisao[]
 }
 
 model Escolas {

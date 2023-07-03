@@ -9,6 +9,7 @@ class SupervisiaoRepositorie {
       select: {
         id: true,
         nome: true,
+        cor: true,
         supervisor: {
           select: {
             id: true,
@@ -35,16 +36,48 @@ class SupervisiaoRepositorie {
     const supervisaoExistById = await prisma.supervisao.findUnique({
       where: {
         id: id,
+      },
+      select: {
+        id: true,
+        nome: true,
+        cor: true,
+        supervisor: {
+          select: {
+            id: true,
+            firstName: true,
+            photoPerfil: true,
+          }
+        },
+        celulas: {
+          select: {
+            id: true,
+            nome: true,
+            lider: {
+              select: {
+                id: true,
+                firstName: true,
+              }
+            }
+          }
+        },
+        User: {
+          select: {
+            id: true,
+            firstName: true,
+            photoPerfil: true,
+          }
+        },
       }
     })
     return supervisaoExistById
   }
 
   async createSupervisao(supervisaoDataForm: SupervisaoData) {
-    const { nome, supervisor, celulas, membros } = supervisaoDataForm
+    const { nome, cor, supervisor, celulas, membros } = supervisaoDataForm
     return await prisma.supervisao.create({
       data: {
         nome,
+        cor,
         supervisor: {
           connect: {
             id: supervisor.id
@@ -62,13 +95,14 @@ class SupervisiaoRepositorie {
   }
 
   async updateSupervisao(id: string, supervisaoDataForm: SupervisaoData) {
-    const { nome, supervisor, celulas, membros } = supervisaoDataForm
+    const { nome, cor, supervisor, celulas, membros } = supervisaoDataForm
     return await prisma.supervisao.update({
       where: {
         id: id,
       },
       data: {
         nome,
+        cor,
         supervisor: {
           connect: {
             id: supervisor.id

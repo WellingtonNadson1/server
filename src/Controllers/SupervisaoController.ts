@@ -13,6 +13,7 @@ interface User {
 
 export interface SupervisaoData {
   nome: string;
+  cor: string
   supervisor: {
     id: string
     nome: string
