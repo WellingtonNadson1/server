@@ -1,6 +1,7 @@
 // import express from "express";
 import cors from "@fastify/cors";
 import Fastify, { FastifyInstance } from "fastify";
+import routerAccount from "./Routers/AccountRouters";
 import routerCelula from "./Routers/CelulaRouters";
 import routerSupervisao from "./Routers/SupervisaoRouters";
 import routerUser from "./Routers/UserRouters";
@@ -15,6 +16,7 @@ const start = async () => {
       origin: "*",
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
     })
+    app.register(routerAccount)
     app.register(routerSupervisao)
     app.register(routerCelula)
     app.register(routerUser) // tipo um middleware do express

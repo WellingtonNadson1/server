@@ -83,6 +83,7 @@ model User {
 
   accounts Account[]
   sessions Session[]
+  password String?
 
   @@map("User") // Defina um nome de tabela personalizado, se necessário
 }
