@@ -77,7 +77,7 @@ class UserRepositorie {
   }
 
   async findByEmail(email: string){
-    return await prisma.user.findUnique({
+    return await prisma.user.findFirst({
       where: {
         email: email,
       }
@@ -85,7 +85,8 @@ class UserRepositorie {
   }
 
   async createUser(userDataForm: UserData) {
-  const {supervisao, celula, escolas, encontros, situacao_no_reino, cargo_de_lideranca, ...userData} = userDataForm
+    const {password, supervisao, celula, escolas, encontros, situacao_no_reino, cargo_de_lideranca, ...userData} = userDataForm
+    console.log( {password} )
   const user = await prisma.user.create({
     data: {
       ...userData,

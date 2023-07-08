@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { FastifyReply, FastifyRequest } from 'fastify';
 import UserRepositorie from "../Repositories/UserRepositorie";
 
@@ -76,8 +77,14 @@ class UserController {
         .send({ message: "User already exist, please try other email!" });
     }
 
+    let { password } = userDataForm;
+    const saltRounds = 10;
+
+    password = bcrypt.hashSync(password, saltRounds)
+
+
     const user = await UserRepositorie.createUser({
-      ...userDataForm,
+      ...userDataForm, password
     });
     return reply.code(201).send(user);
   }
