@@ -77,14 +77,14 @@ class UserController {
         .send({ message: "User already exist, please try other email!" });
     }
 
-    let { password } = userDataForm;
+    const { password } = userDataForm;
     const saltRounds = 10;
 
-    password = bcrypt.hashSync(password, saltRounds)
+    const hashPassword: string = bcrypt.hashSync(password, saltRounds)
 
 
     const user = await UserRepositorie.createUser({
-      ...userDataForm, password
+      ...userDataForm, password: hashPassword
     });
     return reply.code(201).send(user);
   }

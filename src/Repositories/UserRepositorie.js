@@ -73,14 +73,15 @@ class UserRepositorie {
         });
     }
     async findByEmail(email) {
-        return await prisma.user.findUnique({
+        return await prisma.user.findFirst({
             where: {
                 email: email,
             }
         });
     }
     async createUser(userDataForm) {
-        const { supervisao, celula, escolas, encontros, situacao_no_reino, cargo_de_lideranca, ...userData } = userDataForm;
+        const { password, supervisao, celula, escolas, encontros, situacao_no_reino, cargo_de_lideranca, ...userData } = userDataForm;
+        console.log({ password });
         const user = await prisma.user.create({
             data: {
                 ...userData,

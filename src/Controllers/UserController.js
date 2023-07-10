@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const UserRepositorie_1 = __importDefault(require("../Repositories/UserRepositorie"));
 class UserController {
     // Fazendo uso do Fastify
@@ -30,8 +31,11 @@ class UserController {
                 .code(404)
                 .send({ message: "User already exist, please try other email!" });
         }
+        const { password } = userDataForm;
+        const saltRounds = 10;
+        const hashPassword = await bcrypt_1.default.hashSync(password, saltRounds);
         const user = await UserRepositorie_1.default.createUser({
-            ...userDataForm,
+            ...userDataForm, password: hashPassword
         });
         return reply.code(201).send(user);
     }

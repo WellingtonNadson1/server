@@ -10,7 +10,7 @@ const AccountRouters_1 = __importDefault(require("./Routers/AccountRouters"));
 const CelulaRouters_1 = __importDefault(require("./Routers/CelulaRouters"));
 const SupervisaoRouters_1 = __importDefault(require("./Routers/SupervisaoRouters"));
 const UserRouters_1 = __importDefault(require("./Routers/UserRouters"));
-const PORT = 3333;
+const PORT = process.env.PORT ?? 3333;
 const app = (0, fastify_1.default)({ logger: true });
 const start = async () => {
     try {

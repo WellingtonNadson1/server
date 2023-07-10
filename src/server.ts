@@ -1,12 +1,12 @@
 // import express from "express";
-import cors from "@fastify/cors";
 import Fastify, { FastifyInstance } from "fastify";
+import cors from "@fastify/cors"
 import routerAccount from "./Routers/AccountRouters";
 import routerCelula from "./Routers/CelulaRouters";
 import routerSupervisao from "./Routers/SupervisaoRouters";
 import routerUser from "./Routers/UserRouters";
 
-const PORT = process.env.PORT ?? 3333;
+const PORT = 3333;
 
 const app: FastifyInstance = Fastify( {logger: true});
 
