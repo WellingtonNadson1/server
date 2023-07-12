@@ -35,6 +35,21 @@ class CelulaRepositorie {
     return await prisma.celula.findUnique({
       where: {
         id: id,
+      },
+      select: {
+        id: true,
+        nome: true,
+        User: {
+          select: {
+            firstName: true,
+          }
+        },
+        lider: {
+          select: {
+            id: true,
+            firstName: true,
+          }
+        }
       }
     })
   }
