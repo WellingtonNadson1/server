@@ -36,7 +36,7 @@ export interface UserData {
   dateCasamento: string | Date;
   hasFilho: string;
   quantidadeFilho: number;
-  endereco_id: string | undefined;
+  endereco: string | undefined;
   dateDecisao: string | Date;
   situacao_no_reino: string;
   cargo_de_lideranca: string;

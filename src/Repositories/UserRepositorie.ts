@@ -85,7 +85,7 @@ class UserRepositorie {
   }
 
   async createUser(userDataForm: UserData) {
-    const {password, supervisao, celula, escolas, encontros, situacao_no_reino, cargo_de_lideranca, ...userData} = userDataForm
+    const {password, supervisao, endereco, celula, escolas, encontros, situacao_no_reino, cargo_de_lideranca, ...userData} = userDataForm
     console.log( {password} )
   const user = await prisma.user.create({
     data: {
@@ -94,6 +94,11 @@ class UserRepositorie {
       supervisao: {
           connect: {
             id: supervisao
+          }
+      },
+      endereco: {
+          connect: {
+            id: endereco
           }
       },
       celula: {
@@ -124,7 +129,7 @@ class UserRepositorie {
   }
 
   async updateUser(id: string, userDataForm: UserData) {
-    const {password, supervisao, celula, escolas, encontros, situacao_no_reino, cargo_de_lideranca, ...userData} = userDataForm
+    const {password, supervisao, endereco, celula, escolas, encontros, situacao_no_reino, cargo_de_lideranca, ...userData} = userDataForm
     return await prisma.user.update({
       where: {
         id: id,
@@ -135,6 +140,11 @@ class UserRepositorie {
         supervisao: {
             connect: {
               id: supervisao
+            }
+        },
+        endereco: {
+            connect: {
+              id: endereco
             }
         },
         celula: {
